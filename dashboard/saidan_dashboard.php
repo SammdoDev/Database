@@ -9,12 +9,14 @@ if (file_exists($file_path)) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Saidan</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 flex">
     <div class="w-1/4 bg-white p-4 shadow-lg min-h-screen">
         <h2 class="text-xl font-bold mb-4">Divisi - Cabang Saidan</h2>
@@ -46,7 +48,7 @@ if (file_exists($file_path)) {
     <script>
         let selectedDivisi = null; // Simpan ID divisi yang dipilih
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             fetch("../get_divisi.php")
                 .then(response => response.json())
                 .then(data => {
@@ -99,18 +101,19 @@ if (file_exists($file_path)) {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `nama_staff=${staffName}&id_divisi=${selectedDivisi}`
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Staff berhasil ditambahkan!");
-                    document.getElementById("staff-name").value = ""; // Reset input
-                    loadStaff(selectedDivisi, document.getElementById("title").textContent.split(" - ")[1]); // Refresh staff list
-                } else {
-                    alert("Gagal menambahkan staff: " + data.error);
-                }
-            })
-            .catch(error => console.error("Error menambahkan staff:", error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Staff berhasil ditambahkan!");
+                        document.getElementById("staff-name").value = ""; // Reset input
+                        loadStaff(selectedDivisi, document.getElementById("title").textContent.split(" - ")[1]); // Refresh staff list
+                    } else {
+                        alert("Gagal menambahkan staff: " + data.error);
+                    }
+                })
+                .catch(error => console.error("Error menambahkan staff:", error));
         }
     </script>
 </body>
+
 </html>

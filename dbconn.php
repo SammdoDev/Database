@@ -13,7 +13,9 @@ try {
     if (!$conn->query($sql))
         throw new Exception("Gagal membuat database");
 
-    $conn->select_db($dbname);
+    if (!$conn->select_db($dbname)) {
+        throw new Exception("Gagal memilih database: " . $conn->error);
+    }
 
     // Hapus tabel lama jika ingin reset ulang (opsional)
     $conn->query("DROP TABLE IF EXISTS skill_matrix, skill, staff, divisi, cabang");
@@ -21,7 +23,7 @@ try {
     // Buat tabel cabang
     $sql = "CREATE TABLE cabang (
         id_cabang INT AUTO_INCREMENT PRIMARY KEY,
-        nama_cabang VARCHAR(100) NOT NULL UNIQUE
+        nama_cabang VARCHAR(100) NOT NULL
     )";
     $conn->query($sql);
 
@@ -349,11 +351,6 @@ foreach ($cabang_list as $cabang) {
     }
 }
 
-if ($conn->connect_error) {
-    throw new Exception("Koneksi gagal: " . $conn->connect_error);
-    $stmt->close();
-    $conn->close();
-    }
 } catch (Exception $e) {
     echo "❌ Terjadi kesalahan: " . $e->getMessage();
 }
